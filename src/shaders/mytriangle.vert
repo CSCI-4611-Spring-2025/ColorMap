@@ -15,8 +15,5 @@ out vec4 interpColor;
 out vec2 interpTexCoords;
 
 void main()  {
-    gl_Position = projectionMatrix * viewMatrix * modelMatrix* vec4(positionModel, 1);
-
-    interpColor = vec4(normalModel,1);
-    interpTexCoords = texCoords;
+    gl_Position = vec4(0,0,0,1);
 }
