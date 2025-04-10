@@ -13,29 +13,35 @@ import { Quaternion } from 'gophergfx'
  */
 export class MyGeometry3Factory
 {
-    public static createTriangle(): MorphMesh3
+    public static createTriangle(): Mesh3
     {
         const vertices: number[] = [];
 
         // TODO: Add 3 vertices
-        //vertices.push(0, 0, 0);
+        vertices.push(-1, -0.5, 0);
+        vertices.push(0, 0.5, 0);
+        vertices.push(1, -0.5, 0);
 
         let normals: number[] = [];
 
         // TODO: Add 3 normals
-        //normals.push(0, 0, 0);
+        normals.push(0, 0, 1);
+        normals.push(0, 0, 1);
+        normals.push(0, 0, 1);
 
         const indices: number[] = [];
 
         // TODO: Add your indices (v1, v2, v3)
-        //indices.push(0, 0, 0);
+        indices.push(0, 2, 1);
 
         const uvs: number[] = [];
 
         // TODO: Add your texture coordinates
-        //uvs.push(0, 0);
+        uvs.push(0, 1);
+        uvs.push(0.5, 0);
+        uvs.push(1, 1);
 
-        const mesh = new MorphMesh3();
+        const mesh = new Mesh3();
         mesh.setVertices(vertices);
         mesh.setNormals(normals);
         mesh.setIndices(indices);
