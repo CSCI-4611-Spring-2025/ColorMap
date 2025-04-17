@@ -10,6 +10,8 @@ import { GUI } from 'dat.gui'
 import { MyGeometry3Factory } from './MyGeometry3Factory';
 import { Arrow } from './Arrow'
 import { MyTriangleMaterial } from './MyTriangleMaterial';
+import { MyPhongMaterial } from './MyPhongMaterial';
+import { MyColorMapMaterial } from './MyColorMapMaterial';
 
 export class App extends gfx.GfxApp
 {
@@ -44,7 +46,7 @@ export class App extends gfx.GfxApp
 
         this.gui = new GUI();
         this.viewMode = 'No';
-        this.displayMode = 'Shaded';
+        this.displayMode = 'Textured';
     }
 
 
@@ -71,10 +73,10 @@ export class App extends gfx.GfxApp
         pointLight.position = new gfx.Vector3(10, 10, 10);
 
         // Set the background image
-        /*const background = gfx.Geometry2Factory.createRect(2, 2);
+        const background = gfx.Geometry2Factory.createRect(2, 2);
         background.material.texture = new gfx.Texture('./assets/stars.png');
         background.layer = 1;
-        this.scene.add(background);*/
+        this.scene.add(background);
 
         // Create a new GUI folder to hold earthquake controls
         const controls = this.gui.addFolder('Controls');
@@ -102,70 +104,28 @@ export class App extends gfx.GfxApp
         this.gui.width = 300;
         controls.open();
 
-
-        // Create Triangle
-        const vertices: number[] = [];
-        let normals: number[] = [];
-        const indices: number[] = [];
-        const uvs: number[] = [];
-        const colors: number[] = [];
-        // Vertices
-        vertices.push(-1, -0.5, 0);
-        vertices.push(0, 0.5, 0);
-        vertices.push(1, -0.5, 0);
-        // Normals
-        normals.push(1, 0, 1);
-        normals.push(0, 1, 1);
-        normals.push(0, 0, 1);
-        // Colors
-        colors.push(1,1,1,1);
-        colors.push(0,0,1,1);
-        colors.push(0,0,1,1);
-        // Texture Coordinates
-        uvs.push(0, 1);
-        uvs.push(0.5, 0);
-        uvs.push(1, 1);
-        // Indices
-        indices.push(0, 2, 1);
-        // Create mesh
-        const mesh = new gfx.Mesh3();
-        mesh.setVertices(vertices);
-        mesh.setNormals(normals);
-        mesh.setIndices(indices);
-        mesh.setTextureCoordinates(uvs);
-        mesh.setColors(colors);
-        this.object = mesh;
-        this.object.material = new MyTriangleMaterial();
+        this.object = gfx.Geometry3Factory.createSphere(1,4);
+        const material = new MyColorMapMaterial();
+        this.object.material = material;
         //this.object.setLocalToParentMatrix(gfx.Matrix4.makeRotationZ(Math.PI/8));
 
+
         this.texture = new gfx.Texture('./assets/earth-2k.png');
+        //this.texture = new gfx.Texture('./assets/height-2k.png');
         this.texture.setMinFilter(true, false); 
-        this.object.material.texture = null;
+        material.texture = this.texture;
+        const colorMap = new gfx.Texture('./assets/color_map.png');
+        //const colorMap = new gfx.Texture('./assets/bin_color_map.png');
+        this.texture.setMinFilter(true, false); 
+        material.colorMap = colorMap;
 
         this.scene.add(this.object);
 
         const verts = this.object.getVertices();
         const norms = this.object.getNormals();
-        for (let i = 0; i < normals.length/3; i++) {
+        for (let i = 0; i < this.object.getNormals().length/3; i++) {
             const vertex = new gfx.Vector3(verts[i*3], verts[i*3+1], verts[i*3+2]);
             const normal = new gfx.Vector3(norms[i*3], norms[i*3+1], norms[i*3+2]);
-            const normalMesh = new Arrow();
-            normalMesh.position = vertex;
-            normalMesh.vector = normal;
-            normalMesh.color = gfx.Color.YELLOW;
-            normalMesh.scale = new gfx.Vector3(0.2, 0.2, 0.2);
-            normalMesh.visible = this.viewMode == "Yes";
-            this.normalMeshes.push(normalMesh);
-            this.scene.add(normalMesh);
-        }
-
-        for (let i = 0; i < 1; i = i+0.2) {
-            const lv = new gfx.Vector3(verts[0], verts[1], verts[2]);
-            const tv = new gfx.Vector3(verts[3], verts[4], verts[5]);
-            const ln = new gfx.Vector3(norms[0], norms[1], norms[2]);
-            const tn = new gfx.Vector3(norms[3], norms[4], norms[5]);
-            const vertex = gfx.Vector3.add(lv,gfx.Vector3.multiplyScalar(gfx.Vector3.subtract(tv,lv), i));
-            const normal = gfx.Vector3.add(ln,gfx.Vector3.multiplyScalar(gfx.Vector3.subtract(tn,ln), i));
             const normalMesh = new Arrow();
             normalMesh.position = vertex;
             normalMesh.vector = normal;
