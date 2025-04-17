@@ -104,12 +104,7 @@ void main() {
 
     vec4 color = vec4(1);
 
-    if (useTexture != 0) {
-       color = texture(surfaceTexture, interpTexCoords);
-    }
-
     fragColor *= color;
-    //fragColor = color;
     
 
 }
