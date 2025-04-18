@@ -52,7 +52,7 @@ void main()
     interpNormalWorld = normalize((normalMatrix * vec4(normalModel, 0)).xyz);
 
     float height = texture(surfaceTexture, texCoords).x;
-    interpPositionWorld = interpPositionWorld + height*interpNormalWorld*0.2;
+    interpPositionWorld = interpPositionWorld + height*interpNormalWorld*0.1;
 
     interpColor = color;
     interpTexCoords = texCoords.xy; 

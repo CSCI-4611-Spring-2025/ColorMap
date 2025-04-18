@@ -23,6 +23,7 @@ export class MyColorMapMaterial extends gfx.Material3
 
     public texture: gfx.Texture | null;
     public colorMap: gfx.Texture | null;
+    public normalMap: gfx.Texture | null;
     public ambientColor: gfx.Color;
     public diffuseColor: gfx.Color;
     public specularColor: gfx.Color;
@@ -38,6 +39,8 @@ export class MyColorMapMaterial extends gfx.Material3
 
     private colorMapUniform: WebGLUniformLocation | null;
     private usecolorMapUnifirom: WebGLUniformLocation | null;
+    private normalMapUniform: WebGLUniformLocation | null;
+    private useNormalMapUnifirom: WebGLUniformLocation | null;
 
     private eyePositionUniform: WebGLUniformLocation | null;
     private modelUniform: WebGLUniformLocation | null;
@@ -64,6 +67,7 @@ export class MyColorMapMaterial extends gfx.Material3
 
         this.texture = null;
         this.colorMap = null;
+        this.normalMap = null;
         this.ambientColor = new gfx.Color(1, 1, 1);
         this.diffuseColor = new gfx.Color(1, 1, 1);
         this.specularColor = new gfx.Color(0, 0, 0);
@@ -81,6 +85,8 @@ export class MyColorMapMaterial extends gfx.Material3
 
         this.colorMapUniform = MyColorMapMaterial.shader.getUniform(this.gl, 'colorMap');
         this.usecolorMapUnifirom = MyColorMapMaterial.shader.getUniform(this.gl, 'usecolorMap');
+        this.normalMapUniform = MyColorMapMaterial.shader.getUniform(this.gl, 'normalMap');
+        this.useNormalMapUnifirom = MyColorMapMaterial.shader.getUniform(this.gl, 'useNormalMap');
 
         this.eyePositionUniform = MyColorMapMaterial.shader.getUniform(this.gl, 'eyePositionWorld');
         this.viewUniform = MyColorMapMaterial.shader.getUniform(this.gl, 'viewMatrix');
@@ -204,7 +210,21 @@ export class MyColorMapMaterial extends gfx.Material3
             this.gl.uniform1i(this.usecolorMapUnifirom, 0);
         }
 
-        if (this.texture || this.colorMap) {
+        if (this.normalMap) {
+            // Activate the normal map in the shader
+            this.gl.uniform1i(this.useNormalMapUnifirom, 1);
+
+            // Set the normal map
+            this.gl.activeTexture(this.gl.TEXTURE2);
+            this.gl.bindTexture(this.gl.TEXTURE_2D, this.normalMap.texture);
+            this.gl.uniform1i(this.normalMapUniform, 2);
+        }
+        else {
+            // Disable the normal map in the shader
+            this.gl.uniform1i(this.useNormalMapUnifirom, 0);
+        }
+
+        if (this.texture || this.colorMap || this.normalMap) {
             // Set the texture coordinates
             if (this.texCoordAttribute != -1) {
                 this.gl.enableVertexAttribArray(this.texCoordAttribute);

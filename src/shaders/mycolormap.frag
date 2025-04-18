@@ -51,6 +51,8 @@ in vec2 interpTexCoords;
 // color map data
 uniform int usecolorMap;
 uniform sampler2D colorMap;
+uniform int useNormalMap;
+uniform sampler2D normalMap;
 
 // OUTPUT
 
@@ -110,7 +112,7 @@ void main() {
     vec4 colorMapValue = texture(colorMap, vec2(value, 0.5));
     color = colorMapValue;
 
-    //fragColor *= color;
-    fragColor = color;
+    fragColor *= color;
+    //fragColor = color;
 
 }

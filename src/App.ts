@@ -104,7 +104,7 @@ export class App extends gfx.GfxApp
         this.gui.width = 300;
         controls.open();
 
-        this.object = gfx.Geometry3Factory.createSphere(1,4);
+        this.object = gfx.Geometry3Factory.createSphere(1,3);
         const material = new MyColorMapMaterial();
         this.object.material = material;
         //this.object.setLocalToParentMatrix(gfx.Matrix4.makeRotationZ(Math.PI/8));
@@ -118,8 +118,12 @@ export class App extends gfx.GfxApp
         //const colorMap = new gfx.Texture('./assets/color_map.png');
         //const colorMap = new gfx.Texture('./assets/bin_color_map.png');
         const colorMap = new gfx.Texture('./assets/color_map3.png');
-        this.texture.setMinFilter(true, false); 
+        colorMap.setMinFilter(true, false); 
         material.colorMap = colorMap;
+
+        const normalMap = new gfx.Texture('./assets/normal_map.png');
+        normalMap.setMinFilter(true, false); 
+        material.normalMap = normalMap;
 
         this.scene.add(this.object);
 
