@@ -104,7 +104,7 @@ export class App extends gfx.GfxApp
         this.gui.width = 300;
         controls.open();
 
-        this.object = gfx.Geometry3Factory.createSphere(1,3);
+        this.object = gfx.Geometry3Factory.createSphere(1,4);
         const material = new MyColorMapMaterial();
         this.object.material = material;
         //this.object.setLocalToParentMatrix(gfx.Matrix4.makeRotationZ(Math.PI/8));

@@ -7,6 +7,7 @@
  * PUBLIC DISTRIBUTION OF SOURCE CODE OUTSIDE OF CSCI 4611 IS PROHIBITED
  */ 
 
+precision mediump int;
 precision mediump float;
 
 // constants used to indicate the type of each light
@@ -47,6 +48,9 @@ in vec3 interpPositionWorld;
 in vec3 interpNormalWorld;
 in vec4 interpColor;
 in vec2 interpTexCoords;
+in vec3 interpPositionTangent;
+in vec3 eyePositionTangent;
+in vec3 lightPositionsTangent[MAX_LIGHTS];
 
 // color map data
 uniform int usecolorMap;
@@ -60,7 +64,6 @@ out vec4 fragColor;
 
 
 void main() {
-    // PART 2.0: In class example
 
     fragColor = vec4(0,0,0,1);
 

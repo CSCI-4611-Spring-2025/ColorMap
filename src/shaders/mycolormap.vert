@@ -7,8 +7,15 @@
  * PUBLIC DISTRIBUTION OF SOURCE CODE OUTSIDE OF CSCI 4611 IS PROHIBITED
  */ 
 
+precision mediump int;
 precision mediump float;
 
+// constants used to indicate the type of each light
+#define POINT_LIGHT 0
+#define DIRECTIONAL_LIGHT 1
+
+// max number of simultaneous lights handled by this shader
+const int MAX_LIGHTS = 8;
 
 // INPUT FROM UNIFORMS SET IN THE MAIN APPLICATION
 
@@ -21,12 +28,23 @@ uniform mat4 viewMatrix;
 // Transforms points and vectors from View Space to Normalized Device Coordinates (viewToNDC)
 uniform mat4 projectionMatrix;
 
+// position of the camera in world coordinates
+uniform vec3 eyePositionWorld;
+
+// properties of the lights in the scene
+uniform int numLights;
+uniform int lightTypes[MAX_LIGHTS];
+uniform vec3 lightPositionsWorld[MAX_LIGHTS];
+uniform vec3 lightAmbientIntensities[MAX_LIGHTS];
+uniform vec3 lightDiffuseIntensities[MAX_LIGHTS];
+uniform vec3 lightSpecularIntensities[MAX_LIGHTS];
 
 // INPUT FROM THE MESH THIS VERTEX SHADER IS RUNNING ON
 
 // per-vertex data, points and vectors are defined in Model Space
 in vec3 positionModel;
 in vec3 normalModel;
+in vec3 tangentModel;
 in vec4 color;
 in vec2 texCoords;
 
@@ -37,6 +55,9 @@ out vec3 interpPositionWorld;
 out vec3 interpNormalWorld;
 out vec4 interpColor;
 out vec2 interpTexCoords;
+out vec3 interpPositionTangent;
+out vec3 eyePositionTangent;
+out vec3 lightPositionsTangent[MAX_LIGHTS];
 
 // texture data
 uniform int useTexture;
@@ -52,9 +73,10 @@ void main()
     interpNormalWorld = normalize((normalMatrix * vec4(normalModel, 0)).xyz);
 
     float height = texture(surfaceTexture, texCoords).x;
-    interpPositionWorld = interpPositionWorld + height*interpNormalWorld*0.1;
+    interpPositionWorld = interpPositionWorld + height*interpNormalWorld*0.05;
 
     interpColor = color;
     interpTexCoords = texCoords.xy; 
     gl_Position = projectionMatrix * viewMatrix * vec4(interpPositionWorld, 1);
+
 }
