@@ -104,7 +104,13 @@ void main() {
 
     vec4 color = vec4(1);
 
-    fragColor *= color;
-    
+    color = texture(surfaceTexture, interpTexCoords);
+    float value = color.x;
+
+    vec4 colorMapValue = texture(colorMap, vec2(value, 0.5));
+    color = colorMapValue;
+
+    //fragColor *= color;
+    fragColor = color;
 
 }

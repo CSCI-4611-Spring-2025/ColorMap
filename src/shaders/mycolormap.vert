@@ -51,6 +51,9 @@ void main()
     interpPositionWorld = (modelMatrix * vec4(positionModel, 1)).xyz;
     interpNormalWorld = normalize((normalMatrix * vec4(normalModel, 0)).xyz);
 
+    float height = texture(surfaceTexture, texCoords).x;
+    interpPositionWorld = interpPositionWorld + height*interpNormalWorld*0.2;
+
     interpColor = color;
     interpTexCoords = texCoords.xy; 
     gl_Position = projectionMatrix * viewMatrix * vec4(interpPositionWorld, 1);

@@ -110,12 +110,14 @@ export class App extends gfx.GfxApp
         //this.object.setLocalToParentMatrix(gfx.Matrix4.makeRotationZ(Math.PI/8));
 
 
-        this.texture = new gfx.Texture('./assets/earth-2k.png');
-        //this.texture = new gfx.Texture('./assets/height-2k.png');
+        //this.texture = new gfx.Texture('./assets/earth-2k.png');
+        this.texture = new gfx.Texture('./assets/height-2k.png');
+        //this.texture = new gfx.Texture('./assets/minneapolis.jpg');
         this.texture.setMinFilter(true, false); 
         material.texture = this.texture;
-        const colorMap = new gfx.Texture('./assets/color_map.png');
+        //const colorMap = new gfx.Texture('./assets/color_map.png');
         //const colorMap = new gfx.Texture('./assets/bin_color_map.png');
+        const colorMap = new gfx.Texture('./assets/color_map3.png');
         this.texture.setMinFilter(true, false); 
         material.colorMap = colorMap;
 
